@@ -1,24 +1,30 @@
 #!/usr/bin/env bash
+
+# Example
+# ./loginteams.sh CTFURL CTFDB CREDSFILE SSLCERTFORCTF
+
+
 ctfurl=$1
-filename=$2
+ctfdb=$2
+filename=$3
+sslcert=$4
 teamid=10
-ctfurl="https://$ctfurl/index.php?ajax=true"
+ctffqdn="https://$ctfurl/index.php?ajax=true"
 useragent="User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:32.0) Gecko/20100101 Firefox/32.0"
 echo "Looping creds to login"
 while read line
 do
     creds=(${line})
-    /usr/bin/curl $ctfurl --data "action=login_team&team_id=$teamid&teamname=${creds[0]}&password=${creds[1]}"
-    ((teamid++))
-    echo ""
+   /usr/bin/curl $ctffqdn --data "action=login_team&team_id=$teamid&teamname=${creds[0]}&password=${creds[1]}"
+   ((teamid++))
+   echo ""
 done < "$filename"
 
-echo "Writing Tokens to File"
 while read line
 do
-    creds=(${line})
-    mysql -u ctf -h ctfrds-cluster.cluster-cmrmp3qxqcap.ap-northeast-1.rds.amazonaws.com -pctf -e "select cookie,data FROM sessions WHERE data LIKE \"%${creds[0]}%\";"  fbctf >>output.txt
+   creds=(${line})
+   ssh -i $sslcert ubuntu@$ctfurl "mysql -u ctf -h $ctfdb -pctf -e 'select cookie,data FROM sessions WHERE data LIKE \"%${creds[0]}%\";'  fbctf" >>session.txt &
 done < "$filename"
 
 
-#curl https://ctf.jpskotest.trenddemos.com/index.php?ajax=true --data "action=login_team&team_id=2&teamname=Tester9&password=Tester1234"
+awk 'NR%2==0' session.txt >> sessions.txt
