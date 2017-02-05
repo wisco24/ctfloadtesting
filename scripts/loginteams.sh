@@ -17,7 +17,7 @@ echo "Writing Tokens to File"
 while read line
 do
     creds=(${line})
-    echo 'mysql -u ctf -h ctfrds-cluster.cluster-cmrmp3qxqcap.ap-northeast-1.rds.amazonaws.com -pctf -e 'select cookie,data FROM sessions WHERE data LIKE "%${creds[0]}%";'  fbctf >>output.txt'
+    echo 'mysql -u ctf -h ctfrds-cluster.cluster-cmrmp3qxqcap.ap-northeast-1.rds.amazonaws.com -pctf -e \'select cookie,data FROM sessions WHERE data LIKE \"%${creds[0]}%\";\'  fbctf >>output.txt'
 done < "$filename"
 
 
