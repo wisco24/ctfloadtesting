@@ -17,10 +17,7 @@ echo "Writing Tokens to File"
 while read line
 do
     creds=(${line})
-    mysql
-
-    /usr/bin/curl $ctfurl --data "action=login_team&team_id=$teamid&teamname=${creds[0]}&password=${creds[1]}"
-    ((teamid++))
+    mysql -u ctf -h ctfrds-cluster.cluster-cmrmp3qxqcap.ap-northeast-1.rds.amazonaws.com -pctf -e 'select cookie,data FROM sessions WHERE data LIKE "%${creds[0]}%";'  fbctf >> output.txt
     echo ""
 done < "$filename"
 
