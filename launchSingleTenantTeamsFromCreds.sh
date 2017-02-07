@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./getTeamsCsv.sh
+getTeamsCsv.sh
 
 filename="teamcreds"
 

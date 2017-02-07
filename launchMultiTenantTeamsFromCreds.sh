@@ -30,13 +30,13 @@ logfile=launchMulti.log
 
 
 echo "Launch MT DSM" >> ${logfile} 2>&1
-./launchMtDSM.sh "${dsmT0Password}" ${activationCode} ${keyPair} ${vpc} ${dsmSubnet} ${dbSubnet1} ${dbSubnet2} ${dsStackName}
+launchMtDSM.sh "${dsmT0Password}" ${activationCode} ${keyPair} ${vpc} ${dsmSubnet} ${dbSubnet1} ${dbSubnet2} ${dsStackName}
 echo "Running configMtDsm.sh" >> ${logfile} 2>&1
 ./configMtDsm.sh "${dsmT0Password}" ${mtActivationCode} ${dsmFqdn} ${dsStackName} ${ctrlFqdn} ${baseDomain} ${baseDomainHostedZoneId}
 echo "Sleep 60 for manager multi tenant settings"
 sleep 60
 echo "Getting creds from S3 and storing new file locally" >> ${logfile} 2>&1
-filename=$(./getTeamsCsv.sh ${bucket})
+filename=$(getTeamsCsv.sh ${bucket})
 echo "Looping creds to create teams" >> ${logfile} 2>&1
 while read line
 do

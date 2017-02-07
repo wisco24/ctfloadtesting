@@ -2,39 +2,19 @@ import csv
 import requests
 import sys
 
+#Process Variables from Script Parameters
 hostname = sys.argv[1]
 csrf_token = sys.argv[2]
 session = sys.argv[3]
 url = "https://" + hostname + "/index.php?p=game&ajax=true"
-user = "Tester1"
-password = "Tester1234"
 
-def login():
-    s = requests.Session()
-    uri = url + '/index.php?ajax=true'
-    data = {
-        'action': 'login_team',
-        'team_id': '2',
-        'teamname': 'eshulze',
-        'password': 'Password123',
-    }
-    r = s.post(uri, data=data, verify=verify)
-    res = json.loads(r.content)
-    if res['result'] == 'OK':
-        print '[+] Logged in successfully'
-    else:
-        print '[!] Log in failed, exiting'
-        exit(1)
-
-    return s
-
-
+#Header Data for CTF
 headers =  {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',\
             'Accept': '*/*', 'Connection': 'keep-alive', 'Accept-Encoding': 'gzip, deflate',\
             'Origin': 'https://' + hostname, \
             'Cookie': 'Leaderboard=close;  Announcements=close; Activity=close; Teams=close; Filter=close; Game Clock=close; FBCTF={}'.format(session)}
 
-
+#Loop through level.csv to try each attempt in file as user tokens provived in parameters
 with open('level.csv') as csvfile:
     reader = csv.DictReader(csvfile)
 
