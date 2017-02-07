@@ -19,7 +19,7 @@ echo "Looping creds to login"
 while read line
 do
     creds=(${line})
-    teamlogin.sh $ctfurl $ctfdb $sslcert ${creds[0]} ${creds[1]}
+   ./teamlogin.sh $ctfurl $ctfdb $sslcert ${creds[0]} ${creds[1]}
    echo ""
 done < "$filename"
 

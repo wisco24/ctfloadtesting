@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Scritps.iml" filepath="$PROJECT_DIR$/.idea/Scritps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ctfloadtesting.iml" filepath="$PROJECT_DIR$/.idea/ctfloadtesting.iml" />
     </modules>
   </component>
 </project>
