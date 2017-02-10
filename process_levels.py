@@ -4,8 +4,8 @@ import sys
 
 #Process Variables from Script Parameters
 hostname = sys.argv[1]
-csrf_token = sys.argv[2]
-session = sys.argv[3]
+csrf_token = sys.argv[3]
+session = sys.argv[2]
 url = "https://" + hostname + "/index.php?p=game&ajax=true"
 
 #Header Data for CTF

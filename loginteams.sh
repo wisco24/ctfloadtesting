@@ -7,8 +7,8 @@
 ctfurl=$1
 ctfdb=$2
 filename=sanitizedTeamCreds
-sslcert=$4
-bucket=$5
+sslcert=$3
+bucket=$4
 teamid=10
 ctffqdn="https://$ctfurl/index.php?ajax=true"
 
@@ -22,18 +22,23 @@ do
    ./teamlogin.sh $ctfurl $ctfdb $sslcert ${creds[0]} ${creds[1]}
    echo ""
 done < "$filename"
-
+sleep 10
 #Remove cookie/data from session doc
 awk 'NR%2==0' session.txt >> sessions.txt
 
-
+sleep 5
 #BRYAN SCRIPT
-cat sessions.txt | sed -r 's/^(.{32}).*:22:"([0-9a-zA-Z]{0,22}).*/\1,\2/'
+sed -e 's/^\(.\{32\}\).*s:2[1|2|3]:"\(.\{21,23\}\)".*;/\1,\2/' sessions.txt > sanitizedsessions.txt
 
+#Wait for previous to finish
+sleep 5
+#Clean Special Characters
+./getTeamSessions.sh
+sleep 5
 #Use Tokens to submit answers/attemps to CTF for each user
 echo "Launching Answer Script"
 while read line
 do
     tokens=($line})
-    python process_levels.py $ctfurl ${tokens[1]} ${tokens[0]} &
-done < "sessions.txt"
+    python process_levels.py $ctfurl ${tokens[0]} ${tokens[1]} &
+done < "sanitizedTeamSessions"
